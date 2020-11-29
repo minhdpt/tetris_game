@@ -1,0 +1,2 @@
+# Pixi.JS TypeScript boilerplate
+

@@ -1,0 +1,14 @@
+{
+    "nixEnvSelector.nixShellConfig": "${workspaceRoot}/shell.nix",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.prettierrc": true,
+        "**/package-lock.json": true,
+        "dist/": true,
+        "node_modules/": true,
+        ".gitignore": true,
+        "**/.vscode": true,
+        "**/lib": true,
+        "README.md": true
+    }
+}
