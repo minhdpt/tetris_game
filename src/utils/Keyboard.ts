@@ -15,6 +15,11 @@ const KEY_MAP = {
  * Represents key control and handle custom repeat delay
  */
 class Key {
+    repeatsCount: number;
+    pressed: boolean;
+    repeatTimer: number;
+    code: any;
+    name: any;
     constructor(code) {
         this.code = code;
         this.name = KEY_MAP[code];
@@ -60,13 +65,14 @@ class Key {
  * This class could be more generic, but its not needed for this game.
  */
 export default class Keyboard {
+    keys: any;
     constructor() {
         this.keys = {};
         
         Object.keys(KEY_MAP).forEach(k => {
             let key = new Key(k);
             this.keys[k] = key;
-            this[key.name] = key;
+            this[key['name']] = key;
         });
         
         window.addEventListener('keydown', (evt) => {

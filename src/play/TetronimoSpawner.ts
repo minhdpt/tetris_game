@@ -8,6 +8,7 @@ const shapeTypes = Object.keys(SHAPE_COLORS).join('');
  * but lacks iritating single shape long strikes.
  */
 export default class TetronimoSpawner {
+    queue: any[];
     constructor() {
         this.queue = [];
         this.refillQueue();

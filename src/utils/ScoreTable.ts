@@ -3,7 +3,7 @@
  * Keep track of recent scores
  */
 export default class ScoreTable {
-    
+    scores: any[]
     constructor() {
         this.scores = [];
     }

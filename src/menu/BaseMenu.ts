@@ -24,6 +24,11 @@ export const simpleTextStyle = new TextStyle({
  * Display Game Over screen
  */
 export default class BaseMenu extends State {
+    game: any;
+    background: Graphics;
+    title: Text;
+    info: Text;
+    infoVisibilityCounter: number;
     constructor(game, titleText = 'PIXTRIS', infoText = 'Press SPACE to play') {
         super();
         

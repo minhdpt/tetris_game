@@ -6,7 +6,7 @@ import GamePlay from './play/GamePlay';
 import GameMenu from './menu/GameMenu';
 import GameOver from './menu/GameOver';
 import GamePaused from './menu/GamePaused';
-import Singleton from './base/Singleton';
+import SoundManager from './manager/SoundManager';
 
 
 /**
@@ -24,6 +24,11 @@ export default class Game{
         this.app = app        
         this.gameStates = {}
         this.state = null
+    }
+
+    loadResources()
+    {
+        Game.SoundManager.loadAll()
     }
     
     /**
@@ -94,5 +99,9 @@ export default class Game{
         newState.enter(opts);
         newState.visible = true;
         this.state = newState;
+    }
+
+    public static get SoundManager(): SoundManager {
+        return SoundManager.getInstance<SoundManager>();
     }
 }

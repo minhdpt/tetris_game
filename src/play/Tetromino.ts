@@ -38,6 +38,12 @@ export const SHAPE_COLORS = {j: 'blue', s: 'green', t: 'purple', o: 'yellow',
  * Represent tetromino with position and rotation
  */
 export default class Tetromino {
+    shapeType: any;
+    color: any;
+    shapeRotation: number;
+    shape: any;
+    row: number;
+    col: number;
     constructor(shapeType) {
         this.shapeType = shapeType;
         this.color = SHAPE_COLORS[shapeType];
