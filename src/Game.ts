@@ -41,6 +41,12 @@ export default class Game{
             this.app.renderer.width,
             this.app.renderer.height);
         this.app.stage.addChild(background);
+
+        background.interactive = true
+        // background.buttonMode = true;
+        background.once('pointerdown', () =>{
+            console.log('pointer down!')
+        })
         
         this.key = new Keyboard();
         this.scores = new ScoreTable();

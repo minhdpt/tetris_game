@@ -32,11 +32,11 @@ module.exports = {
     },
     plugins: [
         // No need to write a index.html
-        new HtmlWebpackPlugin(),
+        // new HtmlWebpackPlugin(),
         // Do not accumulate files in ./dist
-        new CleanWebpackPlugin(),
+        // new CleanWebpackPlugin(),
         // Copy assets to serve them
-        new CopyPlugin([{ from: 'assets', to: 'assets' }]),
+        new CopyPlugin([{ from: 'assets', to: 'assets' }, { from: 'build_template', to: '.' }]),
     ],
     devServer: {
         // webpack-dev-server configuration
