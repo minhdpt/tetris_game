@@ -8,6 +8,20 @@ import TetronimoSpawner from './TetronimoSpawner';
  * GamePlay state provides main game logic
  */
 export default class GamePlay extends State {
+    game: any;
+    board: any;
+    spawner: any;
+    tetromino: any;
+    renderer: Renderer;
+    tetrominoFallSpeed: number;
+    tetrominoFallSpeedMin: number;
+    tetrominoFallSpeedupStep: number;
+    tetrominoFallSpeedupDelay: number;
+    tetrominoDropModifier: number;
+    tetrominoFallTimer: any;
+    tetrominoFallSpeedupTimer: any;
+    rowsCleared: number;
+    score: number;
     constructor(game) {
         super();
         

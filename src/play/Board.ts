@@ -3,6 +3,9 @@
  * Tetris grid model
  */
 export default class Board {
+    rows: any;
+    cols: any;
+    grid: any[];
     constructor(rows, cols) {
         this.rows = rows;
         this.cols = cols;

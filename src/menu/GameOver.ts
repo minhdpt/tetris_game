@@ -8,6 +8,7 @@ import BaseMenu from './BaseMenu';
  * Display Game Over screen
  */
 export default class GameOver extends BaseMenu {
+    scoreInfo: Text;
     constructor(game) {
         super(game, 'GAME\nOVER');
         

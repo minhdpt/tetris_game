@@ -8,6 +8,7 @@ import BaseMenu from './BaseMenu';
  * Display Game Over screen
  */
 export default class GamePaused extends BaseMenu {
+    scoreInfo: Text;
     constructor(game) {
         super(game, 'PAUSED', 'Press SPACE to continue\nPress ESCAPE to restart');
         

@@ -5,6 +5,12 @@ import Game from '../Game'
  * Render board and avtive teromino using PIXI.js
  */
 export default class Renderer extends PIXI.Container {
+    rows: any;
+    cols: any;
+    rowsOffset: any;
+    blockSize: any;
+    textures: PIXI.ITextureDictionary;
+    sprites: PIXI.Sprite[][];
     
     /**
      * Initialize renderer
@@ -13,7 +19,7 @@ export default class Renderer extends PIXI.Container {
      * @param {Number} rowsOffset Number of rows in model to skip from rendering
      * @param {Number} blockSize  Target block size
      */
-    constructor(rows, cols, rowsOffset, blockSize) {
+    constructor(rows: number, cols: number, rowsOffset: number, blockSize: number) {
         super();
         
         this.rows = rows;
@@ -26,13 +32,13 @@ export default class Renderer extends PIXI.Container {
         this.sprites = [];
         
         for (let i = 0; i < this.rows; ++i) {
-            let row = [];
+            let row: PIXI.Sprite[] = [];
             for (let j = 0; j < this.cols; ++j) {
                 let spr = new PIXI.Sprite(this.textures.background);
                 row.push(spr);
                 spr.x = j * this.blockSize;
                 spr.y = i * this.blockSize;
-                spr.blockColor = null;
+                (spr as any).blockColor = null;
                 this.addChild(spr);
             }
             this.sprites.push(row);
@@ -42,8 +48,8 @@ export default class Renderer extends PIXI.Container {
     updateColor(row, col, color) {
         if(row < 0) return;
         let sprite = this.sprites[row][col];
-        if (sprite.blockColor != color) {
-            sprite.blockColor = color;
+        if ((sprite as any).blockColor != color) {
+            (sprite as any).blockColor = color;
             sprite.texture = this.textures[color] || this.textures.background;
         }
     }
