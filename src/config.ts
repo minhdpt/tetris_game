@@ -1,8 +1,8 @@
 
 export const game = {
     // board dimensions
-    cols: 10,
-    rows: 20,
+    cols: 20,
+    rows: 20 ,
     hiddenRows: 2,
     // number of frames between block falls one row
     fallSpeed: 30,
@@ -18,8 +18,8 @@ const SPRITE_SIZE = 32;
 export const display = {
     // currently hardcoded block sprite size
     blockSize: SPRITE_SIZE,
-    width: game.cols * SPRITE_SIZE,
-    height: game.rows * SPRITE_SIZE
+    width: 720,//game.cols * SPRITE_SIZE,
+    height: 1080//game.rows * SPRITE_SIZE
 }
 
 export const controls = {

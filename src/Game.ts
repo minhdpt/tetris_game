@@ -7,7 +7,9 @@ import GameMenu from './menu/GameMenu';
 import GameOver from './menu/GameOver';
 import GamePaused from './menu/GamePaused';
 import SoundManager from './manager/SoundManager';
-
+import config from './config';
+import CustomEventListener from './base/CustomEventListener';
+var Victor = require('victor');
 
 /**
  * Represent whole game and handles state changes
@@ -19,11 +21,16 @@ export default class Game{
     state: any = null
     key: Keyboard
     scores: ScoreTable
+
+    bgSprite: PIXI.Sprite
+    dragging: boolean = false
+    touchStart
     constructor(app) {
         Game.instance = this
         this.app = app        
         this.gameStates = {}
         this.state = null
+        this.dragging = false        
     }
 
     loadResources()
@@ -41,13 +48,25 @@ export default class Game{
             this.app.renderer.width,
             this.app.renderer.height);
         this.app.stage.addChild(background);
+        this.bgSprite = background
 
-        background.interactive = true
-        // background.buttonMode = true;
-        background.once('pointerdown', () =>{
-            console.log('pointer down!')
-        })
         
+        this.app.stage.interactive = true
+        background.interactive = true
+        background.buttonMode = true;
+        // this.app.stage.once('pointerdown', () =>{
+        //     console.log('pointer down!')
+        // })
+
+        this.app.stage
+        .on('pointerdown', this.onDragStart.bind(this))
+        .on('pointerup', this.onDragEnd.bind(this))
+        .on('pointerupoutside', this.onDragEnd.bind(this))
+        .on('pointermove', this.onDragMove.bind(this));
+        
+        // window.document.addEventListener('pointermove', () =>{
+        //     console.log('pointer down 2!')
+        // })
         this.key = new Keyboard();
         this.scores = new ScoreTable();
         
@@ -109,5 +128,72 @@ export default class Game{
 
     public static get SoundManager(): SoundManager {
         return SoundManager.getInstance<SoundManager>();
+    }
+
+    onDragStart(event)    
+    {
+        
+        let startPos = event.data.getLocalPosition(this.app.stage);
+        this.touchStart = new Victor(startPos.x, startPos.y)
+        //console.log('touch draging start' + this.touchStart)
+        
+    }
+
+    onDragMove(event)    
+    {
+        // this.dragging = true
+        // if(this.dragging)
+        {
+            
+            let endPos = event.data.getLocalPosition(this.app.stage);
+            
+            let touchEnd = new Victor(endPos.x, endPos.y)
+            console.log('points  ' + this.touchStart + '---' + touchEnd)
+            // let distance = touchEnd.distance(this.touchStart)
+            let dir = touchEnd.clone()
+            dir.subtract(this.touchStart)
+            if(dir.y > 5 || dir.x > 5)
+            {
+                this.dragging = true
+            }
+            // let colNum = distance / config.display.blockSize
+            // console.log('touch move with ' + colNum)
+            // console.log('touch move with x ' + dir)
+            if(dir.x < -config.display.blockSize)
+            {
+                CustomEventListener.dispatchEvent('move left')
+                this.touchStart = touchEnd
+            }
+
+            if(dir.x > config.display.blockSize)
+            {
+                CustomEventListener.dispatchEvent('move right')
+                this.touchStart = touchEnd
+            }
+
+            if(dir.y > 20)
+            {
+                CustomEventListener.dispatchEvent('down')
+            }
+            // console.log('dir.x ' + dir.x )
+            // CustomEventListener.dispatchEvent('touch end')
+
+            
+        }
+        
+    }    
+    onDragEnd(event)    
+    {        
+        this.touchStart = 0
+        if(this.dragging)
+        {
+            CustomEventListener.dispatchEvent('touch end')
+        }else
+        {
+            CustomEventListener.dispatchEvent('tap')
+        }
+
+        
+        this.dragging = false
     }
 }

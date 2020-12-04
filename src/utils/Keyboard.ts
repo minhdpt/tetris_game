@@ -1,4 +1,5 @@
 
+import CustomEventListener from '../base/CustomEventListener';
 import { controls as controlsConfig } from '../config';
 
 // handled keys
@@ -66,6 +67,7 @@ class Key {
  */
 export default class Keyboard {
     keys: any;
+    currentKey: Key
     constructor() {
         this.keys = {};
         
@@ -87,5 +89,43 @@ export default class Keyboard {
                 key.onRelease();
             }
         });
+
+        CustomEventListener.on('move left', () => {
+            let key = this.keys[37];
+            if (key) {                
+                this.currentKey && this.currentKey.onRelease();
+                key.onPress();
+                this.currentKey = key
+            }
+        })
+
+        CustomEventListener.on('move right', () => {
+            let key = this.keys[39];
+            if (key) {
+                this.currentKey && this.currentKey.onRelease();
+                key.onPress();                
+                this.currentKey = key
+            }
+        })
+
+
+        CustomEventListener.on('down', () => {
+            let key = this.keys[40];
+            if (key) {
+                key.onPress();
+            }
+        })
+        CustomEventListener.on('tap', () => {
+            let key = this.keys[38];
+            if (key) {
+                key.onPress();
+            }
+        })
+
+        CustomEventListener.on('touch end', () => {
+            Object.keys(this.keys).forEach(keyCode => {
+                this.keys[keyCode].onRelease()
+            })
+        })
     }
 }

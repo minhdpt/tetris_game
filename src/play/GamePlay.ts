@@ -1,7 +1,10 @@
+import CustomEventListener from '../base/CustomEventListener';
 import config from '../config';
+import Game from '../Game';
 import State from '../utils/State';
 import Board from './Board';
 import Renderer from './Renderer';
+import Tetromino from './Tetromino';
 import TetronimoSpawner from './TetronimoSpawner';
 
 /**
@@ -11,7 +14,7 @@ export default class GamePlay extends State {
     game: any;
     board: any;
     spawner: any;
-    tetromino: any;
+    tetromino: Tetromino;
     renderer: Renderer;
     tetrominoFallSpeed: number;
     tetrominoFallSpeedMin: number;
@@ -131,6 +134,7 @@ export default class GamePlay extends State {
                 ++this.tetromino.col;
                 this.tetromino.rotate();
             }
+            CustomEventListener.dispatchEvent('touch end')
         }
         
         if (this.game.key.left.trigger() && !this.board.collides(this.tetromino.absolutePos(0, -1))) {
@@ -150,6 +154,8 @@ export default class GamePlay extends State {
             if (this.board.collides(this.tetromino.absolutePos(1, 0))) {
                 this.lockTetromino();
                 this.spawnTetromino();
+                // (this.game.key as any).escape.onRelease()
+                CustomEventListener.dispatchEvent('touch end')
             } else {
                 ++this.tetromino.row;
                 this.tetrominoFallTimer = this.tetrominoFallSpeed;
