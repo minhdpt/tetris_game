@@ -15,9 +15,9 @@ export default class SoundManager extends Singleton
         PIXI.sound.add(Constant.ASSETS_SOUND)
     }
 
-    playSound(soundId: string)
+    playSound(soundId: string, loop = false)
     {
-        PIXI.sound.play(soundId)
+        PIXI.sound.play(soundId, {loop: loop})
     }
 
     stopdSound(soundId: string)

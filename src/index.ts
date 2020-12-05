@@ -5,7 +5,6 @@ import * as PIXI from "pixi.js";
 import SOUND from "pixi-sound";
 
 PIXI["s" + "o" + "u" + "n" + "d"] = SOUND
-// create PIXI application
 let app = new Application()
 app.renderer.resize(config.display.width, config.display.height);
 document.body.appendChild(app.view);

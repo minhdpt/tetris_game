@@ -1,5 +1,6 @@
 
 import * as PIXI from 'pixi.js';
+import config from '../config';
 import Game from '../Game'
 /**
  * Render board and avtive teromino using PIXI.js
@@ -36,8 +37,8 @@ export default class Renderer extends PIXI.Container {
             for (let j = 0; j < this.cols; ++j) {
                 let spr = new PIXI.Sprite(this.textures.background);
                 row.push(spr);
-                spr.x = j * this.blockSize;
-                spr.y = i * this.blockSize;
+                spr.x = config.display.blockSize + j * this.blockSize;
+                spr.y = i * this.blockSize - config.display.blockSize;
                 (spr as any).blockColor = null;
                 this.addChild(spr);
             }

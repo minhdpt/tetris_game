@@ -1,6 +1,6 @@
-import CustomEventListener from '../base/CustomEventListener';
 import config from '../config';
 import Game from '../Game';
+import SoundManager from '../manager/SoundManager';
 import State from '../utils/State';
 import Board from './Board';
 import Renderer from './Renderer';
@@ -60,6 +60,7 @@ export default class GamePlay extends State {
             this.score = 0;
 
             this.spawnTetromino();
+            (this.game.SoundManager as SoundManager).playSound('bgm_gameplay', true)
         }
     }
     
@@ -96,6 +97,7 @@ export default class GamePlay extends State {
         if (this.board.collides(this.tetromino.absolutePos(0, 0))) {
             this.lockTetromino();
             this.gameOver();
+            (this.game.SoundManager as SoundManager).playSound('sfx_clear')
         }
     }
     
@@ -109,6 +111,10 @@ export default class GamePlay extends State {
         if (fullRows.length > 0) {
             this.updateScore(fullRows.length);
             this.board.cleanRows(fullRows);
+            (this.game.SoundManager as SoundManager).playSound('sfx_clear')
+        }else
+        {
+            (this.game.SoundManager as SoundManager).playSound('sfx_landing')
         }
     }
     
@@ -118,6 +124,8 @@ export default class GamePlay extends State {
     gameOver() {
         this.game.scores.add(this.rowsCleared, this.score);
         this.game.setState('gameover', {keepVisible: true});
+        (this.game.SoundManager as SoundManager).stopdSound('bgm_gameplay')
+
     }
     
     /**
@@ -125,16 +133,18 @@ export default class GamePlay extends State {
      */
     updateTetromino() {
         if (this.game.key.up.trigger()) {
-            if (!this.board.collides(this.tetromino.absolutePos(0, 0, true))) {
+            if (!this.board.collides(this.tetromino.absolutePos(0, 0, true))) {                
                 this.tetromino.rotate();
+                (this.game.SoundManager as SoundManager).playSound('sfx_selection')
             } else if (!this.board.collides(this.tetromino.absolutePos(0, -1, true))) {
                 --this.tetromino.col;
                 this.tetromino.rotate();
+                (this.game.SoundManager as SoundManager).playSound('sfx_selection')
             } else if (!this.board.collides(this.tetromino.absolutePos(0, 1, true))) {
                 ++this.tetromino.col;
                 this.tetromino.rotate();
+                (this.game.SoundManager as SoundManager).playSound('sfx_selection')
             }
-            CustomEventListener.dispatchEvent('touch end')
         }
         
         if (this.game.key.left.trigger() && !this.board.collides(this.tetromino.absolutePos(0, -1))) {
@@ -148,14 +158,12 @@ export default class GamePlay extends State {
         if ((--this.tetrominoFallSpeedupTimer) <= 0) {
             this.tetrominoFallSpeed = Math.max(this.tetrominoFallSpeedMin, this.tetrominoFallSpeed - this.tetrominoFallSpeedupStep);
             this.tetrominoFallSpeedupTimer = this.tetrominoFallSpeedupDelay;
-            console.log('speed: ', this.tetrominoFallSpeed);
+            
         }
         if ((this.tetrominoFallTimer -= tickMod) <= 0) {
             if (this.board.collides(this.tetromino.absolutePos(1, 0))) {
                 this.lockTetromino();
                 this.spawnTetromino();
-                // (this.game.key as any).escape.onRelease()
-                CustomEventListener.dispatchEvent('touch end')
             } else {
                 ++this.tetromino.row;
                 this.tetrominoFallTimer = this.tetrominoFallSpeed;

@@ -1,5 +1,6 @@
 
 import {Text} from 'pixi.js';
+import SoundManager from '../manager/SoundManager';
 
 import BaseMenu from './BaseMenu';
 
@@ -22,6 +23,7 @@ export default class GameOver extends BaseMenu {
     enter(opts) {
         let score = this.game.scores.getNewest();
         this.scoreInfo.text = `Score: ${score.points}\nLines: ${score.lines}`;
+        (this.game.SoundManager as SoundManager).playSound('sfx_gameover')
     }
     
     update(dt) {
@@ -29,6 +31,7 @@ export default class GameOver extends BaseMenu {
         
         if (this.game.key.space.trigger()) {
             this.game.setState('play', {restart: true});
+            (this.game.SoundManager as SoundManager).stopdAllSound()
         }
     }
 }
