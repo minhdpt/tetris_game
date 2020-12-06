@@ -35,4 +35,13 @@ export default class TetronimoSpawner {
         }
         return new Tetromino(this.queue.pop());
     }
+
+    next()
+    {
+        let len = this.queue.length
+        if(len > 0)
+        {
+            return new Tetromino(this.queue[len - 1]);
+        }
+    }
 }

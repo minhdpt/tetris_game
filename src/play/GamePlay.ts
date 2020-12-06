@@ -13,7 +13,7 @@ import TetronimoSpawner from './TetronimoSpawner';
 export default class GamePlay extends State {
     game: any;
     board: any;
-    spawner: any;
+    spawner: TetronimoSpawner;
     tetromino: Tetromino;
     renderer: Renderer;
     gui: GamePlayGUI;
@@ -90,6 +90,7 @@ export default class GamePlay extends State {
         
         this.renderer.updateFromBoard(this.board);
         this.renderer.updateFromTetromino(this.tetromino);
+        this.gui.updateNextTetro(this.spawner.next())
     }
     
     /**
@@ -104,8 +105,7 @@ export default class GamePlay extends State {
             this.lockTetromino();
             this.gameOver();
             (this.game.SoundManager as SoundManager).playSound('sfx_clear')
-        }
-        this.gui.updateNextTetro(this.tetromino)
+        }        
     }
     
     /**
