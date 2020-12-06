@@ -184,6 +184,7 @@ export default class GamePlay extends State {
     updateScore(rows) {
         this.rowsCleared += rows;
         this.score += Math.pow(2, rows - 1);
+        this.gui.updateTexts(this.score, this.rowsCleared)
     }
 
     addGameUI()

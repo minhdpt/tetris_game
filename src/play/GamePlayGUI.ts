@@ -1,8 +1,19 @@
 import * as PIXI from 'pixi.js';
+import { simpleTextStyle } from '../menu/BaseMenu';
+
 export default class GamePlayGUI extends PIXI.Container {
+    private scoreInfo: PIXI.Text
+    private lineInfo: PIXI.Text
+
     constructor()
     {
         super()
+        this.addBorder()
+        this.addTexts()
+    }
+
+    private addBorder()
+    {
         let left = new PIXI.Sprite(PIXI.Texture.WHITE);        
         left.width = 32;
         left.height = 800;
@@ -29,4 +40,22 @@ export default class GamePlayGUI extends PIXI.Container {
         bottom.tint = 0xff0050;
         this.addChild(bottom)
     }
+
+    private addTexts()
+    {
+        this.scoreInfo = new PIXI.Text('Score: 0', simpleTextStyle)        
+        this.scoreInfo.position = new PIXI.Point(32 * 15, 120)
+        this.addChild(this.scoreInfo)
+
+        this.lineInfo = new PIXI.Text('Lines: 0', simpleTextStyle)        
+        this.lineInfo.position = new PIXI.Point(32 * 15, 150)
+        this.addChild(this.lineInfo)
+    }
+
+    updateTexts(scores: number, lines: number)
+    {
+        this.scoreInfo.text = 'Score: ' + scores.toString()
+        this.lineInfo.text = 'Lines: ' + lines.toString()
+    }
+    
 }
