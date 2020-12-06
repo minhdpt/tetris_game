@@ -20,7 +20,7 @@ export default class Renderer extends PIXI.Container {
      * @param {Number} rowsOffset Number of rows in model to skip from rendering
      * @param {Number} blockSize  Target block size
      */
-    constructor(rows: number, cols: number, rowsOffset: number, colOffset: number, blockSize: number) {
+    constructor(rows: number, cols: number, rowsOffset: number, colOffset: number, blockSize: number, startX: number = 0, startY: number = 0) {
         super();
         
         this.rows = rows;
@@ -37,8 +37,8 @@ export default class Renderer extends PIXI.Container {
             for (let j = 0; j < this.cols; ++j) {
                 let spr = new PIXI.Sprite(this.textures.background);
                 row.push(spr);
-                spr.x = config.display.blockSize + j * this.blockSize;
-                spr.y = (i - colOffset) * this.blockSize;
+                spr.x = startX + config.display.blockSize + j * this.blockSize;
+                spr.y = startY + (i - colOffset) * this.blockSize;
                 (spr as any).blockColor = null;
                 this.addChild(spr);
             }
@@ -46,7 +46,7 @@ export default class Renderer extends PIXI.Container {
         }
     }
     
-    private updateColor(row, col, color) {
+    protected updateColor(row, col, color) {
         if(row < 0) return;
         let sprite = this.sprites[row][col];
         if ((sprite as any).blockColor != color) {
