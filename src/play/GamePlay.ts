@@ -1,8 +1,8 @@
 import config from '../config';
-import Game from '../Game';
 import SoundManager from '../manager/SoundManager';
 import State from '../utils/State';
 import Board from './Board';
+import GamePlayGUI from './GamePlayGUI';
 import Renderer from './Renderer';
 import Tetromino from './Tetromino';
 import TetronimoSpawner from './TetronimoSpawner';
@@ -16,6 +16,7 @@ export default class GamePlay extends State {
     spawner: any;
     tetromino: Tetromino;
     renderer: Renderer;
+    gui: GamePlayGUI;
     tetrominoFallSpeed: number;
     tetrominoFallSpeedMin: number;
     tetrominoFallSpeedupStep: number;
@@ -36,6 +37,11 @@ export default class GamePlay extends State {
         
         this.renderer = new Renderer(config.game.rows, config.game.cols, config.game.hiddenRows, config.display.blockSize);
         this.addChild(this.renderer);
+
+        this.gui = new GamePlayGUI()
+        this.addChild(this.gui)
+
+    
     }
     
     /**
@@ -60,7 +66,7 @@ export default class GamePlay extends State {
             this.score = 0;
 
             this.spawnTetromino();
-            (this.game.SoundManager as SoundManager).playSound('bgm_gameplay', true)
+            (this.game.SoundManager as SoundManager).playSound('bgm_gameplay', !true)
         }
     }
     
@@ -178,5 +184,10 @@ export default class GamePlay extends State {
     updateScore(rows) {
         this.rowsCleared += rows;
         this.score += Math.pow(2, rows - 1);
+    }
+
+    addGameUI()
+    {    
+
     }
 }

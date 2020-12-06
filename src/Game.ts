@@ -17,8 +17,7 @@ export default class Game{
     state: any = null
     key: Keyboard
     scores: ScoreTable
-
-    bgSprite: PIXI.Sprite
+    
     dragging: boolean = false
     touchStart
     constructor(app) {
@@ -44,7 +43,7 @@ export default class Game{
             this.app.renderer.width,
             this.app.renderer.height);
         this.app.stage.addChild(background);
-        this.bgSprite = background
+
 
         this.key = new Keyboard();
         this.scores = new ScoreTable();
