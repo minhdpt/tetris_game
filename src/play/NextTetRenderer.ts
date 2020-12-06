@@ -2,10 +2,11 @@
 import * as PIXI from 'pixi.js';
 import config from '../config';
 import Game from '../Game'
+import Tetromino from './Tetromino';
 /**
  * Render board and avtive teromino using PIXI.js
  */
-export default class Renderer extends PIXI.Container {
+export default class NextTetRenderer extends PIXI.Container {
     rows: any;
     cols: any;
     rowsOffset: any;
@@ -37,8 +38,8 @@ export default class Renderer extends PIXI.Container {
             for (let j = 0; j < this.cols; ++j) {
                 let spr = new PIXI.Sprite(this.textures.background);
                 row.push(spr);
-                spr.x = config.display.blockSize + j * this.blockSize;
-                spr.y = (i - colOffset) * this.blockSize;
+                spr.x = 32 * 15 + config.display.blockSize + j * this.blockSize;
+                spr.y = 32 * 7 + (i - colOffset) * this.blockSize;
                 (spr as any).blockColor = null;
                 this.addChild(spr);
             }
@@ -46,7 +47,7 @@ export default class Renderer extends PIXI.Container {
         }
     }
     
-    private updateColor(row, col, color) {
+    updateColor(row, col, color) {
         if(row < 0) return;
         let sprite = this.sprites[row][col];
         if ((sprite as any).blockColor != color) {
@@ -63,11 +64,21 @@ export default class Renderer extends PIXI.Container {
         }
     }
     
-    updateFromTetromino(tetromino) {
+    updateFromTetromino(tetromino:Tetromino) {        
         if (tetromino) {
-            tetromino.absolutePos().forEach(pos => {
-                this.updateColor(pos[0] - this.rowsOffset, pos[1], tetromino.color);
+            this.reset()
+            tetromino.shape.forEach(pos => {
+                this.updateColor(pos[0], pos[1], tetromino.color);
             });
+        }
+    }
+
+    reset()
+    {
+        for (let i = 0; i < this.rows; ++i) {            
+            for (let j = 0; j < this.cols; ++j) {
+                this.updateColor(i, j, this.textures.background)
+            }
         }
     }
 }

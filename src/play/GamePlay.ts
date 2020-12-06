@@ -35,7 +35,7 @@ export default class GamePlay extends State {
         this.spawner = null;
         this.tetromino = null;
         
-        this.renderer = new Renderer(config.game.rows, config.game.cols, config.game.hiddenRows, config.display.blockSize);
+        this.renderer = new Renderer(config.game.rows, config.game.cols, config.game.hiddenRows, config.game.hiddenCols, config.display.blockSize);
         this.addChild(this.renderer);
 
         this.gui = new GamePlayGUI()
@@ -105,6 +105,7 @@ export default class GamePlay extends State {
             this.gameOver();
             (this.game.SoundManager as SoundManager).playSound('sfx_clear')
         }
+        this.gui.updateNextTetro(this.tetromino)
     }
     
     /**

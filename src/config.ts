@@ -4,6 +4,7 @@ export const game = {
     cols: 12,
     rows: 25 ,
     hiddenRows: 0,
+    hiddenCols: 1,
     // number of frames between block falls one row
     fallSpeed: 30,
     fallSpeedMin: 3,
