@@ -1,3 +1,4 @@
+import Constant from '../common/Constants';
 import config from '../config';
 import SoundManager from '../manager/SoundManager';
 import State from '../utils/State';
@@ -6,7 +7,7 @@ import GamePlayGUI from './GamePlayGUI';
 import Renderer from './Renderer';
 import Tetromino from './Tetromino';
 import TetronimoSpawner from './TetronimoSpawner';
-
+var Victor = require('victor');
 /**
  * GamePlay state provides main game logic
  */
@@ -26,6 +27,10 @@ export default class GamePlay extends State {
     tetrominoFallSpeedupTimer: any;
     rowsCleared: number;
     score: number;
+    dragging: boolean = false
+    touchStart = null
+    isSpeedUp: boolean = false
+
     constructor(game) {
         super();
         
@@ -41,7 +46,17 @@ export default class GamePlay extends State {
         this.gui = new GamePlayGUI()
         this.addChild(this.gui)
 
-    
+        this.registerTouchEvents()
+    }
+
+    registerTouchEvents()
+    {
+        this.game.app.stage.interactive = true
+        this.game.app.stage
+        .on('pointerdown', this.handlePlayTouchStart.bind(this))
+        .on('pointerup', this.handlePlayTouchEnd.bind(this))
+        .on('pointerupoutside', this.handlePlayTouchEnd.bind(this))
+        .on('pointermove', this.handlePlayTouchMove.bind(this));
     }
     
     /**
@@ -123,6 +138,8 @@ export default class GamePlay extends State {
         {
             (this.game.SoundManager as SoundManager).playSound('sfx_landing')
         }
+        this.game.key.down.onRelease()
+        this.isSpeedUp = false
     }
     
     /**
@@ -156,9 +173,11 @@ export default class GamePlay extends State {
         
         if (this.game.key.left.trigger() && !this.board.collides(this.tetromino.absolutePos(0, -1))) {
             --this.tetromino.col;
+            this.game.key.left.onRelease()
         }
         if (this.game.key.right.trigger() && !this.board.collides(this.tetromino.absolutePos(0, 1))) {
             ++this.tetromino.col;
+            this.game.key.right.onRelease()
         }
          
         let tickMod = this.game.key.down.pressed ? this.tetrominoDropModifier : 1;
@@ -191,5 +210,60 @@ export default class GamePlay extends State {
     addGameUI()
     {    
 
+    }
+
+    handlePlayTouchStart(event)
+    {
+        let startPos = event.data.getLocalPosition(this.game.app.stage);
+        this.touchStart = new Victor(startPos.x, startPos.y)
+    }
+
+    handlePlayTouchEnd(event)
+    {
+        if(this.dragging)
+        {
+            
+        }else
+        {
+            if(!this.isSpeedUp)
+            {
+                this.game.key.up.onPress()
+            }            
+        }        
+        this.dragging = false
+        this.touchStart = null        
+    }
+
+    handlePlayTouchMove(event)
+    {
+        if(this.touchStart && !this.isSpeedUp)
+        {
+            let endPos = event.data.getLocalPosition(this.game.app.stage);
+            let touchEnd = new Victor(endPos.x, endPos.y)
+            let dir = touchEnd.clone()
+            dir.subtract(this.touchStart)
+            if(dir.y > Constant.TOUCH_DRAGGING_OFF_X || dir.x > Constant.TOUCH_DRAGGING_OFF_Y)
+            {
+                this.dragging = true
+            }
+
+            if(dir.x < -config.display.blockSize)
+            {
+                this.game.key.left.onPress()
+                this.touchStart = touchEnd
+            }
+
+            if(dir.x > config.display.blockSize)
+            {
+                this.game.key.right.onPress()
+                this.touchStart = touchEnd
+            }
+
+            if(dir.y > Constant.TOUCH_DRAGGING_DOWN)
+            {
+                this.isSpeedUp = true
+                this.game.key.down.onPress()
+            }
+        }
     }
 }

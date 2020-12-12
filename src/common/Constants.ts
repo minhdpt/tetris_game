@@ -8,4 +8,8 @@ export default class Constant
         'sfx_gameover': 'assets/sound/sfx/gameover.mp3',
         'bgm_gameplay': 'assets/sound/music/bgm.mp3',        
     }
+
+    public static readonly TOUCH_DRAGGING_OFF_X = 5
+    public static readonly TOUCH_DRAGGING_OFF_Y = 5
+    public static readonly TOUCH_DRAGGING_DOWN = 40
 }

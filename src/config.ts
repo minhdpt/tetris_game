@@ -11,7 +11,7 @@ export const game = {
     fallSpeedupStep: 1,
     fallSpeedupDelay: 1800,
     // block will fall this time faster when drop key pressed
-    dropModifier: 10
+    dropModifier: 60
 }
 
 const SPRITE_SIZE = 32;

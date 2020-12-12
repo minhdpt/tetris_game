@@ -41,9 +41,11 @@ class Key {
                     ? controlsConfig.repeatDelay
                     : controlsConfig.initialRepeatDelay;
                 ++this.repeatsCount;
+                this.onRelease()
                 return true;
             }
         }
+        this.onRelease()
         return false;
     }
     
