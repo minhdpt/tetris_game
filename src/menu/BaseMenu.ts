@@ -29,7 +29,7 @@ export default class BaseMenu extends State {
     title: Text;
     info: Text;
     infoVisibilityCounter: number;
-    constructor(game, titleText = 'PIXTRIS', infoText = 'Press SPACE to play') {
+    constructor(game, titleText = 'PIXTRIS', infoText = 'Touch to play') {
         super();
         
         this.game = game;

@@ -30,11 +30,5 @@ export default class GamePaused extends BaseMenu {
     
     update(dt) {
         super.update(dt);
-        
-        if (this.game.key.space.trigger()) {
-            this.game.setState('play', {restart: false});
-        } else if (this.game.key.escape.trigger()) {
-            this.game.setState('play', {restart: true});
-        }
     }
 }

@@ -90,14 +90,6 @@ export default class GamePlay extends State {
      * @param {Number} dt pixi timer deltaTime
      */
     update(dt) {
-        if (this.game.key.escape.trigger() || this.game.key.space.trigger()) {
-            this.game.setState('pause', {
-                keepVisible: true,
-                score:{
-                    points: this.score,
-                    lines: this.rowsCleared
-                }});
-        }
         
         if (this.tetromino) {
             this.updateTetromino();
@@ -205,11 +197,6 @@ export default class GamePlay extends State {
         this.rowsCleared += rows;
         this.score += Math.pow(2, rows - 1);
         this.gui.updateTexts(this.score, this.rowsCleared)
-    }
-
-    addGameUI()
-    {    
-
     }
 
     handlePlayTouchStart(event)
