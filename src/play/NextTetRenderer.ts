@@ -1,4 +1,5 @@
 import * as PIXI from 'pixi.js';
+import config from '../config';
 import Renderer from './Renderer';
 import Tetromino from './Tetromino';
 /**
@@ -13,7 +14,7 @@ export default class NextTetRenderer extends Renderer {
     sprites: PIXI.Sprite[][];
 
     constructor(rows: number, cols: number, rowsOffset: number, colOffset: number, blockSize: number) {
-        super(rows, cols, rowsOffset, colOffset, blockSize, 32 * 15, 32 * 7);
+        super(rows, cols, rowsOffset, colOffset, blockSize, config.display.blockSize * 15, config.display.blockSize * 7);
     }    
     
     updateFromTetromino(tetromino:Tetromino) {        
